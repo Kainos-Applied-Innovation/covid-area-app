@@ -1,0 +1,10 @@
+type Council @model {
+  id: String!
+  level: Int
+}
+type Restrictions @model {
+  id: String!
+  overview: String
+  open: String
+  closed: String
+}

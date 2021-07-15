@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "api": {
+      "covidDataApi": [
+        "Mutation"
+      ]
+    },
+    "storage": {
+      "Council:@model(appsync)": [
+        "create",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "covidareaapplayer6c62e3aa",
+      "env": "dev",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true
+    }
+  ]
+}
