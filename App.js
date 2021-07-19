@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { Platform, StyleSheet, Text, View, SafeAreaView, Button, Alert } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { getCouncil, listCouncils, getRestrictions } from './src/graphql/queries';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import SelectDropdown from 'react-native-select-dropdown';
 import * as Location from 'expo-location';
 import Amplify from 'aws-amplify';
@@ -14,6 +15,34 @@ const App = () => {
   const [restrictions, setRestrictions] = useState(null);
   const [alertLevel, setAlertLevel] = useState(null);
   const [councilList, setCouncilList] = useState([])
+
+  // Get local Storage - location state
+  async function getLocalStorage() {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@location')
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch(e) {
+      console.log("Error caught for local storage");
+      return null;
+    }
+  }
+
+  // Write local Storage - location state
+  async function writeLocalStorage (locationState, alertState) {
+    try {
+      jsonState = {
+        'council' : locationState,
+        'level' : alertState
+      }
+      const jsonValue = JSON.stringify(jsonState)
+      await AsyncStorage.setItem('@location', jsonValue);
+      return 1;
+    } catch (e) {
+      // saving error
+      console.log("Storage write failure");
+      return null;
+    }
+  }
 
   // Get Council names from GQL
   async function fetchCouncilNames() {
@@ -111,7 +140,6 @@ const App = () => {
 		      setCouncil(selectedItem);
 
           // TODO
-          
           // Use selected item to get alert level
           // update screen
           // display updated restrictions
@@ -120,14 +148,14 @@ const App = () => {
 	      buttonTextAfterSelection={(selectedItem, index) => {
           // text represented after item is selected
           // if data array is an array of objects then return selectedItem.property to render after item is selected
-          return selectedItem
+          return selectedItem;
 	      }}
 	      
         rowTextForSelection={(item, index) => {
           // text represented for each item in dropdown
           // if data array is an array of objects then return item.property to represent item in dropdown
-          return item
-	      }}  
+          return item;
+	      }}
       />
 
       <Button
