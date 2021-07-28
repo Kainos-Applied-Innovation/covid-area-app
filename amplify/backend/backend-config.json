@@ -8,8 +8,8 @@
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 7,
-              "description": "Key for accessing covid area data"
+              "apiKeyExpirationDays": 31,
+              "description": "Key for covid app testing"
             }
           },
           "additionalAuthenticationProviders": []
