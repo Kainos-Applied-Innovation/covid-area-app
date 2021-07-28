@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Platform, StyleSheet, Text, View, SafeAreaView, Button, ScrollView } from 'react-native';
+import { Text, View, SafeAreaView, Button, ScrollView } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { getCouncil, listCouncils, getRestrictions } from './src/graphql/queries';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -111,39 +111,40 @@ const App = () => {
         console.log('Permissions Denied... returning dummy location')
         
         // Default Test Case
-        let location = {
-          "coords": { 
-            "latitude": 55.855780807135005, 
-            "longitude": -4.25534451672934  
-          },
-          "timestamp": 1626209145852.0579  
-        };
+        // let location = {
+        //   "coords": { 
+        //     "latitude": 55.855780807135005, 
+        //     "longitude": -4.25534451672934  
+        //   },
+        //   "timestamp": 1626209145852.0579  
+        // };
 
+        // let region = await Location.reverseGeocodeAsync({
+        //   latitude : location.coords.latitude,
+        //   longitude : location.coords.longitude
+        // });
+
+        // area = region[0].subregion;
+        setCouncil('Glasgow City');
+        
+        return; 
+      } else {
+
+        let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Low});
         let region = await Location.reverseGeocodeAsync({
           latitude : location.coords.latitude,
           longitude : location.coords.longitude
         });
 
-        area = region[0].subregion;
-        setCouncil(area);
+        let area = region[0].subregion;
+
+        console.log("Checking reverse GeoCode: " + area);
         
-        return; 
-      }
-
-      let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Low});
-      let region = await Location.reverseGeocodeAsync({
-        latitude : location.coords.latitude,
-        longitude : location.coords.longitude
-      });
-
-      area = region[0].subregion;
-
-      console.log("Checking reverse GeoCode: " + area);
-      
-      if (area in councilList){
-        setCouncil(region[0].subregion);
-      } else {
-        setCouncil('Glasgow');
+        if (area in councilList){
+          setCouncil(area);
+        } else {
+          setCouncil('Glasgow City');
+        }
       }
 
     } catch (err) { console.log(err); }
@@ -191,51 +192,63 @@ const App = () => {
       
       
       <View style={styles.container}>
-      <DropDownPicker
-        open={open}
-        value={council}
-        items={councilList}
-        setOpen={setOpen}
-        setValue={setCouncil}
-        setItems={setCouncilList}
-
-        onChangeValue={(value) => {
-          fetechAlertLevel();
-          fetchRestrictions();
-        }}
-        />
-        <Button
+       
+      <Button
           title = "Use My Location"
           style = {styles.button}
           onPress = {() => {
             checkLocation();
           }}
         />
+
+        <DropDownPicker
+          open = {open}
+          value = {council}
+          items = {councilList}
+          setOpen = {setOpen}
+          setValue = {setCouncil}
+          setItems = {setCouncilList}
+          theme = "LIGHT"
+          dropDownDirection = "AUTO"
+
+          onChangeValue={(value) => {
+            fetechAlertLevel();
+            fetchRestrictions();
+          }}
+        />
+
+        
+        
       </View>
 
-      <ScrollView contentContainerStyle={styles.scollContainer}>
+      <View style={styles.scrollContainer}>
         <Text style={styles.title}>
-          Restrictions:
+            Restrictions:
         </Text>
-        <Text style={styles.subTitle}>
-          Overview:
-        </Text>
-        <Text style={styles.body}>
-        {restrictions.overview}
-        </Text>
-        <Text style={styles.subTitle}>
-          Open:
-        </Text>
-        <Text style={styles.body}>
-        {restrictions.open}
-        </Text>
-        <Text style={styles.subTitle}>
-          Closed:
-        </Text>
-        <Text style={styles.body}>
-        {restrictions.closed}
-        </Text>
-      </ScrollView>
+
+        <ScrollView>
+          
+          <Text style={styles.subTitle}>
+            Overview:
+          </Text>
+          <Text style={styles.body}>
+          {restrictions.overview}
+          </Text>
+          <Text style={styles.subTitle}>
+            Open:
+          </Text>
+          <Text style={styles.body}>
+          {restrictions.open}
+          </Text>
+          <Text style={styles.subTitle}>
+            Closed:
+          </Text>
+          <Text style={styles.body}>
+          {restrictions.closed}
+          </Text>
+        </ScrollView>
+
+      </View>
     </SafeAreaView>
   );
 }

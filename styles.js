@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, StatusBar } from 'react-native';
 
 export default StyleSheet.create({
     overallContainer: {
@@ -11,12 +11,13 @@ export default StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        zIndex: 10
     },
-    scollContainer: {
-      flex: 2,
-      backgroundColor: '#fff'
-        
+    scrollContainer: {
+      flex: 4,
+      backgroundColor: '#fff',
+      paddingTop: StatusBar.currentHeight,  
     },
     alert: {
       fontSize: 100,
@@ -34,7 +35,7 @@ export default StyleSheet.create({
       fontWeight: 'bold',
       color: '#fff',
       backgroundColor: '#005eb8',
-      paddingVertical: 10,
+      paddingTop: 25,
       flex: 1
     },
     title: {
