@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Platform, StyleSheet, Text, View, SafeAreaView, Button, Alert } from 'react-native';
+import { Platform, StyleSheet, Text, View, SafeAreaView, Button, ScrollView } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { getCouncil, listCouncils, getRestrictions } from './src/graphql/queries';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -180,46 +180,51 @@ const App = () => {
   }, []);
 
   return (
-    <SafeAreaView styles={styles.container}>
-      <View style={styles.container}>
-        <Text style={styles.title}>
-          Alert Level:
+    <SafeAreaView style={styles.overallContainer}>
+      <View style={styles.alertContainer}>
+        <Text style={styles.alertTitle}>
+          Alert Level
         </Text>
         <Text style={styles.alert}>
           {alertLevel}
         </Text>
-        
+      </View>
+      
+      
+      <View style={styles.container}>
         <SelectDropdown
-          data={councilList}
-          defaultValue={council}
-          onSelect={(selectedItem, index) => {
+          data = {councilList}
+          defaultValue = {council}
+          style = {styles.selector} 
+          onSelect = {(selectedItem, index) => {
             setCouncil(selectedItem);
             
             fetechAlertLevel();
             fetchRestrictions();
           }}
 
-          buttonTextAfterSelection={(selectedItem, index) => {
+          buttonTextAfterSelection = {(selectedItem, index) => {
             // text represented after item is selected
             // if data array is an array of objects then return selectedItem.property to render after item is selected
             return selectedItem;
           }}
           
-          rowTextForSelection={(item, index) => {
+          rowTextForSelection = {(item, index) => {
             // text represented for each item in dropdown
             // if data array is an array of objects then return item.property to represent item in dropdown
             return item;
           }}
         />
         <Button
-          title="Use My Location"
+          title = "Use My Location"
+          style = {styles.button}
           onPress = {() => {
             checkLocation();
           }}
         />
       </View>
 
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scollContainer}>
         <Text style={styles.title}>
           Restrictions:
         </Text>
@@ -241,7 +246,7 @@ const App = () => {
         <Text style={styles.body}>
         {restrictions.closed}
         </Text>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
