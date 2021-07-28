@@ -65,7 +65,16 @@ expo start
 If you have a real device you can install the Expo app from the App/Play store and then scan the QR code from the bundler app. You will need real devices in order to test push notifications.
 
 ## Running Tests
-TBA
+For End-to-end testing we currently use Cypress to run the testing suite, first start the application;
+```
+expo start
+```
+
+then run cypress and run the test suite through the UI
+
+```
+npx cypress
+```
 
 ## Deployment
 ### Backend
