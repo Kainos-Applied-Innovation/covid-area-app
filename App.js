@@ -46,94 +46,114 @@ async function writeLocalStorage (locationState, alertState) {
   }
 }
 
-// Get Council names from GQL
-async function fetchCouncilNames() {
-  try {
-    const councilData = await API.graphql(graphqlOperation(listCouncils));
-    const councilNames = [];
-    var areas = councilData.data.listCouncils.items;
-    for(let area in areas){
-      councilNames.push(areas[area].id);
-    };
-    councilNames.sort();
-    setCouncilList(councilNames);
-  } catch (err) { console.log(err) }
-}
-
-// Get Alert Level for Current Council State from GQL
-async function fetechAlertLevel() {
-  try {
-    const alert = await API.graphql(graphqlOperation(getCouncil(council)));
-
-    // TODO check parse
-    setAlertLevel(alert.data.getCouncil.items);
-
-  } catch (err) { console.log(err) }
-}
-
-// Get Restrictions for Current Level
-async function fetchRestrictions() {
-  try {
-    const restrictions = await API.graphql(graphqlOperation(getRestrictions(alertLevel)));
-
-    // TODO check parse
-    setRestrictions(restrictions.data.getRestrictions.items);
-
-  } catch (err) { console.log(err) }
-}
-
-// Check location and reverseGeoCode
-async function checkLocation() {
-  try {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      console.log('Permissions Denied... returning dummy location')
-      
-      // Default Test Case
-      let location = {
-        "coords": { 
-          "latitude": 55.855780807135005, 
-          "longitude": -4.25534451672934  
-        },
-        "timestamp": 1626209145852.0579  
-      };
-
-      let region = await Location.reverseGeocodeAsync({
-        latitude : location.coords.latitude,
-        longitude : location.coords.longitude
-      });
-      setCouncil(region[0].subregion);
-      return; 
-    }
-
-    let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Low});
-    let region = await Location.reverseGeocodeAsync({
-      latitude : location.coords.latitude,
-      longitude : location.coords.longitude
-    });
-
-    console.log("Checking reverseGeoCode:" + region[0].subregion);
-    setCouncil(region[0].subregion);
-
-  } catch (err) { console.log(err); }
-}
 
 const App = () => {
-
-  const [council, setCouncil] = useState(null);
-  const [restrictions, setRestrictions] = useState(null);
-  const [alertLevel, setAlertLevel] = useState(null);
-  const [councilList, setCouncilList] = useState([])
+  const [councilList, setCouncilList] = useState([]);
+  const [council, setCouncil] = useState('Glasgow');
+  const [restrictions, setRestrictions] = useState({
+    overview: '',
+    open: '',
+    closed: ''
+  });
+  const [alertLevel, setAlertLevel] = useState(0);
+  
   // const [expoPushToken, setExpoPushToken] = useState('');
   // const [notification, setNotification] = useState(false);
   // const notificationListener = useRef();
   // const responseListener = useRef();
 
+  // Get Council names from GQL
+  async function fetchCouncilNames() {
+    try {
+      const councilData = await API.graphql(graphqlOperation(listCouncils));
+      const councilNames = [];
+      var areas = councilData.data.listCouncils.items;
+      for(let area in areas){
+        councilNames.push(areas[area].id);
+      };
+      councilNames.sort();
+      setCouncilList(councilNames);
+    } catch (err) { console.log(err) }
+  }
+
+  // Get Alert Level for Current Council State from GQL
+  async function fetechAlertLevel() {
+    try {
+      const alert = await API.graphql(graphqlOperation(getCouncil, {id: council}));
+      setAlertLevel(alert.data.getCouncil.level);
+
+    } catch (err) { console.log(err) }
+  }
+
+  // Get Restrictions for Current Level
+  async function fetchRestrictions() {
+    try {
+      const response = await API.graphql(graphqlOperation(getRestrictions, {id: alertLevel.toString()}));
+      
+      responseData = response.data.getRestrictions;
+
+      // TODO check parse
+      setRestrictions({
+        overview: responseData.overview,
+        open: responseData.open,
+        closed: responseData.closed 
+      });
+
+    } catch (err) { console.log(err) }
+  }
+
+  // Check location and reverseGeoCode
+  async function checkLocation() {
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permissions Denied... returning dummy location')
+        
+        // Default Test Case
+        let location = {
+          "coords": { 
+            "latitude": 55.855780807135005, 
+            "longitude": -4.25534451672934  
+          },
+          "timestamp": 1626209145852.0579  
+        };
+
+        let region = await Location.reverseGeocodeAsync({
+          latitude : location.coords.latitude,
+          longitude : location.coords.longitude
+        });
+
+        area = region[0].subregion;
+        setCouncil(area);
+        
+        return; 
+      }
+
+      let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Low});
+      let region = await Location.reverseGeocodeAsync({
+        latitude : location.coords.latitude,
+        longitude : location.coords.longitude
+      });
+
+      area = region[0].subregion;
+
+      console.log("Checking reverse GeoCode: " + area);
+      
+      if (area in councilList){
+        setCouncil(region[0].subregion);
+      } else {
+        setCouncil('Glasgow');
+      }
+
+    } catch (err) { console.log(err); }
+  }
   
   // On page load, populate council list, check perms & get location
   useEffect(() => {
     fetchCouncilNames();
-    checkLocation();
+    // checkLocation();
+
+    fetechAlertLevel()
 
     const stateChange = getLocalStorage();
     if (stateChange !== null) {
@@ -158,15 +178,14 @@ const App = () => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
+    <SafeAreaView styles={styles.container}>
+      <View style={styles.container}>
         <Text style={styles.title}>
           Alert Level:
         </Text>
         <Text style={styles.alert}>
           {alertLevel}
         </Text>
-        
         
         <SelectDropdown
           data={councilList}
@@ -190,13 +209,14 @@ const App = () => {
             return item;
           }}
         />
-
         <Button
           title="Use My Location"
           onPress = {() => {
             checkLocation();
           }}
         />
+        </View>
+        <View style={styles.container}>
         <Text style={styles.title}>
           Restrictions:
         </Text>
@@ -218,7 +238,7 @@ const App = () => {
         <Text style={styles.body}>
         {restrictions.closed}
         </Text>
-      </View> 
+      </View>
     </SafeAreaView>
   );
 }
@@ -231,34 +251,37 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   alert: {
-    fontSize: '35',
+    fontSize: 75,
+    justifyContent: 'center',
     fontWeight: 'bold',
     color: '#fff',
-    marginBottom: '15',
-    marginTop: '15',
-    paddingVertical: '20',
-    backgroundColor: '#005eb8'
+    marginBottom: 25,
+    marginTop: 25,
+    paddingVertical: 25,
+    backgroundColor: '#005eb8',
+    flex: 5
   },
   title: {
-    fontSize: '20',
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#000',
-    marginBottom: '10',
-    marginTop: '10',
+    marginBottom: 10,
+    marginTop: 10,
+    flex: 2
   },
   subTitle: {
-    fontSize: '15',
+    fontSize: 15,
     color: '#000',
-    marginBottom: '5',
-    marginTop: '5',
+    marginBottom: 5,
+    marginTop: 5,
+    flex: 1
   },
   body: {
-    fontSize: '10',
+    fontSize: 10,
     color: '#000',
-    marginBottom: '5',
-    marginTop: '5',
+    marginBottom: 5,
+    marginTop: 5,
   }
-
 });
 
 export default App;
