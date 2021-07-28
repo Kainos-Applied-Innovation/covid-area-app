@@ -3,7 +3,7 @@ import { Platform, StyleSheet, Text, View, SafeAreaView, Button, ScrollView } fr
 import { API, graphqlOperation } from 'aws-amplify';
 import { getCouncil, listCouncils, getRestrictions } from './src/graphql/queries';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SelectDropdown from 'react-native-select-dropdown';
+import DropDownPicker from 'react-native-dropdown-picker';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 import Amplify from 'aws-amplify';
@@ -50,6 +50,7 @@ async function writeLocalStorage (locationState, alertState) {
 
 
 const App = () => {
+  const [open, setOpen] = useState(false);
   const [councilList, setCouncilList] = useState([]);
   const [council, setCouncil] = useState('Glasgow');
   const [restrictions, setRestrictions] = useState({
@@ -71,7 +72,7 @@ const App = () => {
       const councilNames = [];
       var areas = councilData.data.listCouncils.items;
       for(let area in areas){
-        councilNames.push(areas[area].id);
+        councilNames.push({label: areas[area].id, value: areas[area].id, level: areas[area].level});
       };
       councilNames.sort();
       setCouncilList(councilNames);
@@ -92,13 +93,11 @@ const App = () => {
     try {
       const response = await API.graphql(graphqlOperation(getRestrictions, {id: alertLevel.toString()}));
       
-      responseData = response.data.getRestrictions;
-
       // TODO check parse
       setRestrictions({
-        overview: responseData.overview,
-        open: responseData.open,
-        closed: responseData.closed 
+        overview: response.data.getRestrictions.overview,
+        open: response.data.getRestrictions.open,
+        closed: response.data.getRestrictions.closed 
       });
 
     } catch (err) { console.log(err) }
@@ -192,28 +191,18 @@ const App = () => {
       
       
       <View style={styles.container}>
-        <SelectDropdown
-          data = {councilList}
-          defaultValue = {council}
-          style = {styles.selector} 
-          onSelect = {(selectedItem, index) => {
-            setCouncil(selectedItem);
-            
-            fetechAlertLevel();
-            fetchRestrictions();
-          }}
+      <DropDownPicker
+        open={open}
+        value={council}
+        items={councilList}
+        setOpen={setOpen}
+        setValue={setCouncil}
+        setItems={setCouncilList}
 
-          buttonTextAfterSelection = {(selectedItem, index) => {
-            // text represented after item is selected
-            // if data array is an array of objects then return selectedItem.property to render after item is selected
-            return selectedItem;
-          }}
-          
-          rowTextForSelection = {(item, index) => {
-            // text represented for each item in dropdown
-            // if data array is an array of objects then return item.property to represent item in dropdown
-            return item;
-          }}
+        onChangeValue={(value) => {
+          fetechAlertLevel();
+          fetchRestrictions();
+        }}
         />
         <Button
           title = "Use My Location"
