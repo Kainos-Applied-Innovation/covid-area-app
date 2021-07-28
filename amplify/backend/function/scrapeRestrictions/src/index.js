@@ -23,7 +23,7 @@ const updateRestrictions = gql`
         }
       }
 `
-const db = API_COVIDDATAAPI_GRAPHQLAPIENDPOINTOUTPUT;
+const db = process.env.API_COVIDDATAAPI_GRAPHQLAPIENDPOINTOUTPUT;
 const key = process.env.API_COVIDDATAAPI_GRAPHQLAPIKEYOUTPUT;
 
 const levels = ['https://www.gov.scot/publications/coronavirus-covid-19-protection-levels/pages/protection-level-0/', 
