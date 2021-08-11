@@ -153,7 +153,7 @@ const App = () => {
   // On page load, populate council list, check perms & get location
   useEffect(() => {
     fetchCouncilNames();
-    // checkLocation();
+    checkLocation();
 
     fetechAlertLevel()
 
