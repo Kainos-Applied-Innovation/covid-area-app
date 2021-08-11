@@ -80,7 +80,7 @@ const App = () => {
   }
 
   // Get Alert Level for Current Council State from GQL
-  async function fetechAlertLevel() {
+  async function fetchAlertLevel() {
     try {
       const alert = await API.graphql(graphqlOperation(getCouncil, {id: council}));
       setAlertLevel(alert.data.getCouncil.level);
@@ -155,11 +155,16 @@ const App = () => {
     fetchCouncilNames();
     // checkLocation();
 
-    fetechAlertLevel()
+    fetchAlertLevel()
 
     const stateChange = getLocalStorage();
     if (stateChange !== null) {
       // Previous app use, check if dif from current & push notif
+      setCouncil(stateChange.council)
+      fetchAlertLevel()
+      if (alertLevel !== stateChange.level){
+        //Push notif
+      }
     } else {
       console.log("No previous state");
     }
@@ -212,13 +217,10 @@ const App = () => {
           dropDownDirection = "AUTO"
 
           onChangeValue={(value) => {
-            fetechAlertLevel();
+            fetchAlertLevel();
             fetchRestrictions();
           }}
         />
-
-        
-        
       </View>
 
       <View style={styles.scrollContainer}>
@@ -247,7 +249,6 @@ const App = () => {
           {restrictions.closed}
           </Text>
         </ScrollView>
-
       </View>
     </SafeAreaView>
   );
