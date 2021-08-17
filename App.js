@@ -145,8 +145,7 @@ const App = () => {
   // On page load, populate council list
   useEffect(() => {
     fetchCouncilNames();
-    // checkLocation();
-    fetchAlertLevel()
+    fetechAlertLevel();
 
     const stateChange = getLocalStorage();
     if (stateChange !== null) {
