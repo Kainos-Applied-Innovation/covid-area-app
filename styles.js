@@ -6,7 +6,7 @@ export default StyleSheet.create({
         backgroundColor: '#fff',
     },
     alertContainer: {
-      flex: 2,
+      flex: 3,
       backgroundColor: '#fff'
     },
     container: {
@@ -15,7 +15,7 @@ export default StyleSheet.create({
         zIndex: 10
     },
     scrollContainer: {
-      flex: 4,
+      flex: 3,
       backgroundColor: '#fff',
       paddingTop: StatusBar.currentHeight,  
     },

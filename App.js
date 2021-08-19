@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Text, View, SafeAreaView, Button, ScrollView } from 'react-native';
+import { Text, View, SafeAreaView, Button, ScrollView, Alert } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { getCouncil, listCouncils, getRestrictions } from './src/graphql/queries';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -65,6 +65,16 @@ const App = () => {
   // const notificationListener = useRef();
   // const responseListener = useRef();
 
+  const locationChangeAlert = () =>
+  Alert.alert(
+    "Change in Restrictions",
+    "Restrictions have changed in your area, check the details to be aware of any chagnes",
+    [
+      { text: "OK", onPress: () => console.log("Alert Dismissed") }
+    ],
+    { cancelable: false }
+  );
+
   // Get Council names from GQL
   async function fetchCouncilNames() {
     try {
@@ -80,11 +90,10 @@ const App = () => {
   }
 
   // Get Alert Level for Current Council State from GQL
-  async function fetechAlertLevel() {
+  async function fetchAlertLevel() {
     try {
       const alert = await API.graphql(graphqlOperation(getCouncil, {id: council}));
       setAlertLevel(alert.data.getCouncil.level);
-
     } catch (err) { console.log(err) }
   }
 
@@ -108,28 +117,11 @@ const App = () => {
     try {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        console.log('Permissions Denied... returning dummy location')
-        
-        // Default Test Case
-        // let location = {
-        //   "coords": { 
-        //     "latitude": 55.855780807135005, 
-        //     "longitude": -4.25534451672934  
-        //   },
-        //   "timestamp": 1626209145852.0579  
-        // };
-
-        // let region = await Location.reverseGeocodeAsync({
-        //   latitude : location.coords.latitude,
-        //   longitude : location.coords.longitude
-        // });
-
-        // area = region[0].subregion;
-        setCouncil('Glasgow City');
-        
+        console.log('Permissions Denied... returning dummy location') 
+        setCouncil('Glasgow City');   
         return; 
       } else {
-
+        // Location permissions granted
         let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Low});
         let region = await Location.reverseGeocodeAsync({
           latitude : location.coords.latitude,
@@ -143,40 +135,33 @@ const App = () => {
         if (area in councilList){
           setCouncil(area);
         } else {
+          console.log("Location not in Scotland, defaulting to Glasgow City")
           setCouncil('Glasgow City');
         }
       }
-
     } catch (err) { console.log(err); }
   }
-  
-  // On page load, populate council list, check perms & get location
+
+  // On page load, populate council list
   useEffect(() => {
     fetchCouncilNames();
+<<<<<<< HEAD
     //checkLocation();
 
     fetechAlertLevel()
+=======
+    fetechAlertLevel();
+>>>>>>> 163bcd96961435cf1fb8b13ba7f4a433dad27e51
 
     const stateChange = getLocalStorage();
     if (stateChange !== null) {
-      // Previous app use, check if dif from current & push notif
+      // Previous app use, check if dif from current & alert to changes 
+      if (alertLevel !== stateChange.level){
+        locationChangeAlert();
+      }
     } else {
       console.log("No previous state");
-    }
-
-    // registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-
-    // notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-    //   setNotification(notification);
-    // });
-
-    // responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-    //   console.log(response);
-    // return () => {
-    //   Notifications.removeNotificationSubscription(notificationListener.current);
-    //   Notifications.removeNotificationSubscription(responseListener.current);
-    // };
-    
+    }  
   }, []);
 
   return (
@@ -212,8 +197,9 @@ const App = () => {
           dropDownDirection = "AUTO"
 
           onChangeValue={(value) => {
-            fetechAlertLevel();
+            fetchAlertLevel();
             fetchRestrictions();
+            writeLocalStorage(council, alertLevel)
           }}
         />
       </View>
@@ -244,7 +230,6 @@ const App = () => {
           {restrictions.closed}
           </Text>
         </ScrollView>
-
       </View>
     </SafeAreaView>
   );
