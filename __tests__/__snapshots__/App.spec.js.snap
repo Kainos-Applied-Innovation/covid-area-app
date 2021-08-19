@@ -14,7 +14,7 @@ exports[`Testing the application using Jest App component renders correctly 1`] 
     style={
       Object {
         "backgroundColor": "#fff",
-        "flex": 2,
+        "flex": 3,
       }
     }
   >
@@ -109,7 +109,7 @@ exports[`Testing the application using Jest App component renders correctly 1`] 
     style={
       Object {
         "backgroundColor": "#fff",
-        "flex": 4,
+        "flex": 3,
         "paddingTop": null,
       }
     }
