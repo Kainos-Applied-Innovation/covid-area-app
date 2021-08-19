@@ -153,7 +153,7 @@ const App = () => {
   // On page load, populate council list, check perms & get location
   useEffect(() => {
     fetchCouncilNames();
-    checkLocation();
+    //checkLocation();
 
     fetechAlertLevel()
 
@@ -185,15 +185,14 @@ const App = () => {
         <Text style={styles.alertTitle}>
           Alert Level
         </Text>
-        <Text style={styles.alert}>
+        <Text className="alertLevel" style={styles.alert}>
           {alertLevel}
         </Text>
       </View>
       
-      
       <View style={styles.container}>
-       
-      <Button
+        <Button
+          className="useMyLocationButton"
           title = "Use My Location"
           style = {styles.button}
           onPress = {() => {
@@ -202,6 +201,7 @@ const App = () => {
         />
 
         <DropDownPicker
+          className="councilDropDown"
           open = {open}
           value = {council}
           items = {councilList}
@@ -216,9 +216,6 @@ const App = () => {
             fetchRestrictions();
           }}
         />
-
-        
-        
       </View>
 
       <View style={styles.scrollContainer}>
