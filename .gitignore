@@ -34,3 +34,7 @@ amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
 .vscode
+
+# testing
+cypress/screenshots
+cypress/videos

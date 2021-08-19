@@ -65,15 +65,32 @@ expo start
 If you have a real device you can install the Expo app from the App/Play store and then scan the QR code from the bundler app. You will need real devices in order to test push notifications.
 
 ## Running Tests
-For End-to-end testing we currently use Cypress to run the testing suite, first start the application;
+### Cypress tests
+For End-to-end testing we currently use Cypress to run the testing suite.
+In some Cypress tests, we request permission for the device’s location. As a result, you should run the tests using a browser - such as Chrome.
+
+Navigate to the root directory and enter the following into the console to run the tests:
 ```
-expo start
+npx cypress run --browser chrome
 ```
 
-then run cypress and run the test suite through the UI
+Cypress will generate a video for the most recent test run, which is useful when trying to work out why a test has failed. 
+To view this, navigate to:
+> covid-area-app/cypress/videos
 
+### Jest and Enzyme tests
+For testing the React component, both Jest and Enzyme are used.
+
+Navigate to the root directory and enter the following into the console to run the tests:
 ```
-npx cypress
+npm test
+```
+
+Snapshot testing is useful as it ensures your UI doesn't change unexpectedly.
+If you make any changes in the App.js file, you will need to update the Jest snapshot.
+To do this, enter:
+```
+npm test -- -u
 ```
 
 ## Deployment
@@ -85,7 +102,7 @@ amplify push
 
 ## To Do
 Pending developments in a rough priority
-* Testing (Cypress, Jest and Amplify)
+* Testing (Amplify)
 * Front-end and flow improvements
 * [Offline Sync](https://aws.amazon.com/blogs/mobile/aws-appsync-offline-reference-architecture/)
 * Cleaner Data Model
