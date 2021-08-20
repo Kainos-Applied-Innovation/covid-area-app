@@ -196,34 +196,34 @@ const App = () => {
             writeLocalStorage(council, alertLevel)
           }}
         />
-      </View>
 
-      <View style={styles.scrollContainer}>
-        <Text style={styles.title}>
-            Restrictions:
-        </Text>
+        <View style={styles.scrollContainer}>
+          <Text style={styles.title}>
+              Restrictions:
+          </Text>
 
-        <ScrollView>
-          
-          <Text style={styles.subTitle}>
-            Overview:
-          </Text>
-          <Text style={styles.body}>
-          {restrictions.overview}
-          </Text>
-          <Text style={styles.subTitle}>
-            Open:
-          </Text>
-          <Text style={styles.body}>
-          {restrictions.open}
-          </Text>
-          <Text style={styles.subTitle}>
-            Closed:
-          </Text>
-          <Text style={styles.body}>
-          {restrictions.closed}
-          </Text>
-        </ScrollView>
+          <ScrollView>
+            
+            <Text style={styles.subTitle}>
+              Overview:
+            </Text>
+            <Text style={styles.body}>
+            {restrictions.overview}
+            </Text>
+            <Text style={styles.subTitle}>
+              Open:
+            </Text>
+            <Text style={styles.body}>
+            {restrictions.open}
+            </Text>
+            <Text style={styles.subTitle}>
+              Closed:
+            </Text>
+            <Text style={styles.body}>
+            {restrictions.closed}
+            </Text>
+          </ScrollView>
+        </View>
       </View>
     </SafeAreaView>
   );
