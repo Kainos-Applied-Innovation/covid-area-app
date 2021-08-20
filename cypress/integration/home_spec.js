@@ -5,7 +5,8 @@ describe('The Home Screen:', () => {
 
   it('Council dropdown is populated', () => {
     cy.visit('/');
-    cy.contains('Select an item').should('not.exist')
+    cy.contains('Select an item').click();
+    cy.contains('Fife');
   }),
 
   it('Overview field is populated', () => {
@@ -22,11 +23,11 @@ describe('The Home Screen:', () => {
     cy.visit('/');
 
     // select Fife from the dropdown list
-    cy.contains('Glasgow City').click();
-    cy.contains('Fife').click()
-
+    cy.contains('Select an item').click();
+    cy.contains('Fife').click();
+    
     // click on the button to update our location
-    cy.contains('Use My Location').click()
+    cy.contains('Use My Location').click();
 
     // check for the default council used during testing
     cy.contains('Glasgow City')

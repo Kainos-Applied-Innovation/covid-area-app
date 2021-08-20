@@ -1,13 +1,19 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
+    "type": "module",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "jest --env=jsdom --silent"
+  },
+  "jest": {
+    "preset": "jest-expo"
   },
   "dependencies": {
+    "@babel/plugin-proposal-private-methods": "^7.14.5",
     "@expo/ngrok": "^2.5.0",
     "@react-native-async-storage/async-storage": "^1.15.5",
     "@react-native-community/netinfo": "^6.0.0",
@@ -22,11 +28,19 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
+    "react-native-device-info": "^8.1.7",
     "react-native-dropdown-picker": "^5.1.23",
     "react-native-web": "~0.13.12"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0"
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.15.0",
+    "@babel/preset-react": "^7.14.5",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "jest": "^27.0.6",
+    "jest-expo": "^42.1.0",
+    "react-test-renderer": "16.13"
   },
   "private": true
 }
