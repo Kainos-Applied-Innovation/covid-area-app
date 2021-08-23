@@ -69,7 +69,12 @@ If you have a real device you can install the Expo app from the App/Play store a
 For End-to-end testing we currently use Cypress to run the testing suite.
 In some Cypress tests, we request permission for the device’s location. As a result, you should run the tests using a browser - such as Chrome.
 
-Navigate to the root directory and enter the following into the console to run the tests:
+Before attempting to run Cypress tests, you must start the app and then click "Run in web browser":
+```
+expo start
+```
+
+Navigate to the project's root directory and enter the following into the console to run the tests:
 ```
 npx cypress run --browser chrome
 ```
@@ -81,7 +86,7 @@ To view this, navigate to:
 ### Jest and Enzyme tests
 For testing the React component, both Jest and Enzyme are used.
 
-Navigate to the root directory and enter the following into the console to run the tests:
+Navigate to the project's root directory and enter the following into the console to run the tests:
 ```
 npm test
 ```
