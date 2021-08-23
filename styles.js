@@ -12,7 +12,8 @@ export default StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        zIndex: 10
+        zIndex: 10,
+        minHeight: '50%'
     },
     scrollContainer: {
       flex: 3,

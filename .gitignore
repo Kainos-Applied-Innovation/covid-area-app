@@ -38,3 +38,4 @@ amplifytools.xcconfig
 # testing
 cypress/screenshots
 cypress/videos
+__tests__/__snapshots__
