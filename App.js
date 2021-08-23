@@ -53,12 +53,12 @@ const App = () => {
   const [open, setOpen] = useState(false);
   const [councilList, setCouncilList] = useState([]);
   const [council, setCouncil] = useState('Glasgow');
+  const [alertLevel, setAlertLevel] = useState(0);
   const [restrictions, setRestrictions] = useState({
     overview: '',
     open: '',
     closed: ''
   });
-  const [alertLevel, setAlertLevel] = useState(0);
   
   // const [expoPushToken, setExpoPushToken] = useState('');
   // const [notification, setNotification] = useState(false);
@@ -89,11 +89,19 @@ const App = () => {
     } catch (err) { console.log(err) }
   }
 
-  // Get Alert Level for Current Council State from GQL
+  // get the alert level for the selected council, using the data in councilList
   async function fetchAlertLevel() {
     try {
-      const alert = await API.graphql(graphqlOperation(getCouncil, {id: council}));
-      setAlertLevel(alert.data.getCouncil.level);
+      let level = 0;
+
+      for (let area in councilList){
+        if (councilList[area].value === council){
+          level = councilList[area].level;
+          break;
+        }
+      }
+
+      setAlertLevel(level);
     } catch (err) { console.log(err) }
   }
 
