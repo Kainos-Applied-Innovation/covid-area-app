@@ -4,8 +4,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Install the modules
-      run: yarn
-    - name: Run the Jest tests
-      run: yarn test
+    
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Checkout the repository in the CWD
+        uses: actions/checkout@v2
+
+      - name: Install the NPM dependencies
+        run: npm install
+
+      - name: Run the tests
+        run: npm run test
