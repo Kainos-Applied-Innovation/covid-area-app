@@ -67,7 +67,7 @@ const App = () => {
   const locationChangeAlert = () =>
   Alert.alert(
     "Change in Restrictions",
-    "Restrictions have changed in your area, check the details to be aware of any chagnes",
+    "Restrictions have changed in your area, please check the updated restrictions",
     [
       { text: "OK", onPress: () => console.log("Alert Dismissed") }
     ],
