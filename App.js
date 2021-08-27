@@ -104,7 +104,7 @@ const App = () => {
       return level;
     } catch (err) { 
       console.log(err) 
-      return null;
+      return level;
     }
   }
 
