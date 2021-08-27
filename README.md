@@ -105,6 +105,35 @@ Backend deployment is handled by Amplify;
 amplify push
 ```
 
+### Android
+To run the app on your Android device, your device must be in Developer mode and you should install it using the APK file provided.
+
+To enable developer mode:
+1. Open the Settings app
+2. Navigate to System settings > About phone
+3. Tap on "Build Number" more than 5 times. You may then need to enter your phone's password.
+4. Navigate back to the main Settings page, you will now see "Developer Options" listed
+5. Tap on "Developer Options"
+6. Scroll down to "USB Debugging" and enable it.
+*Note: there may be minor variation between device manufacturers for the instructions above.*
+
+If you have not done so already, please install the Android Platform Tools so that we can access the ADB.
+If you have a Mac and have HomeBrew installed, you can enter the following:
+```
+brew install android-platform-tools
+```
+
+To install the app on your device:
+1. Connect your device to your computer using a USB cable
+2. Use the command below to check that your device is connected:
+```
+adb devices
+```
+3. Install the app, using your path to the APK file:
+```
+adb install /path/to/apk/file
+```
+
 ## To Do
 Pending developments in a rough priority
 * Testing (Amplify)
@@ -128,6 +157,7 @@ Current version: 0.1.0 (Active Development)
 
 ## Authors
 * **Marc Nevin** - *Initial setup*
+* **Liam McCormick** - *Jest & Cypress testing, generating APK file*
 
 ## License
 TBA
