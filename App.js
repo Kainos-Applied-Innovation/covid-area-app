@@ -34,7 +34,7 @@ async function getLocalStorage() {
 // Write local Storage - location state
 async function writeLocalStorage (locationState, alertState) {
   try {
-    jsonState = {
+    let jsonState = {
       'council' : locationState,
       'level' : alertState
     }
@@ -43,11 +43,10 @@ async function writeLocalStorage (locationState, alertState) {
     return 1;
   } catch (err) {
     // saving error
-    console.log("Storage write failure");
+    console.log("Storage write failure - " + err);
     return null;
   }
 }
-
 
 const App = () => {
   const [open, setOpen] = useState(false);
@@ -59,7 +58,7 @@ const App = () => {
     open: '',
     closed: ''
   });
-  
+
   // const [expoPushToken, setExpoPushToken] = useState('');
   // const [notification, setNotification] = useState(false);
   // const notificationListener = useRef();
@@ -68,7 +67,7 @@ const App = () => {
   const locationChangeAlert = () =>
   Alert.alert(
     "Change in Restrictions",
-    "Restrictions have changed in your area, check the details to be aware of any chagnes",
+    "Restrictions have changed in your area, please check the updated restrictions",
     [
       { text: "OK", onPress: () => console.log("Alert Dismissed") }
     ],
@@ -90,19 +89,23 @@ const App = () => {
   }
 
   // get the alert level for the selected council, using the data in councilList
-  async function fetchAlertLevel() {
+  async function fetchAlertLevel(selectedCouncil) {
     try {
       let level = 0;
 
       for (let area in councilList){
-        if (councilList[area].value === council){
+        if (councilList[area].value === selectedCouncil){
           level = councilList[area].level;
           break;
         }
       }
 
       setAlertLevel(level);
-    } catch (err) { console.log(err) }
+      return level;
+    } catch (err) { 
+      console.log(err) 
+      return level;
+    }
   }
 
   // Get Restrictions for Current Level
@@ -153,17 +156,18 @@ const App = () => {
   // On page load, populate council list
   useEffect(() => {
     fetchCouncilNames();
-    fetchAlertLevel()
+    fetchAlertLevel(council)
 
-    const stateChange = getLocalStorage();
-    if (stateChange !== null) {
-      // Previous app use, check if dif from current & alert to changes 
-      if (alertLevel !== stateChange.level){
-        locationChangeAlert();
-      }
-    } else {
-      console.log("No previous state");
-    }  
+    getLocalStorage().then((stateChange) =>{
+      if (stateChange !== null) {
+        // Previous app use, check if dif from current & alert to changes 
+        if (alertLevel !== stateChange.level){
+          locationChangeAlert();
+        }
+      } else {
+        console.log("No previous state");
+      }  
+    });
   }, []);
 
   return (
@@ -199,9 +203,10 @@ const App = () => {
           dropDownDirection = "AUTO"
 
           onChangeValue={(value) => {
-            fetchAlertLevel();
-            fetchRestrictions();
-            writeLocalStorage(council, alertLevel)
+            fetchAlertLevel(council).then((level) =>{
+              fetchRestrictions();
+              writeLocalStorage(council, level);
+            });
           }}
         />
 
