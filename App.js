@@ -7,10 +7,17 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 import Amplify from 'aws-amplify';
-import awsmobile from './src/aws-exports';
-Amplify.configure(awsmobile);
-
 import styles from './styles';
+import awsAmplify from './src/awsAmplify';
+import awsmobile from './src/aws-exports';
+
+if (process.env.GITHUB_ACTIONS == true){
+  // use the env variables in GitHub
+  Amplify.configure(awsAmplify);
+}
+else{
+  Amplify.configure(awsmobile);
+}
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
