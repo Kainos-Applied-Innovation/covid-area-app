@@ -22,5 +22,12 @@ jobs:
           FILE_NAME: "src/aws-exports.js"
           FILE_DATA: ""
 
-      - name: Run the tests
+      - name: Run the Jest tests
         run: npm run test -- -u
+
+      - name: Run the Cypress tests
+        uses: cypress-io/github-action@v2
+        with:
+          build: npm run build
+          start: npm start
+          browser: chrome
