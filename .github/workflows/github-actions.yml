@@ -23,4 +23,4 @@ jobs:
           FILE_DATA: ""
 
       - name: Run the tests
-        run: npm run test
+        run: npm run test -- -u
