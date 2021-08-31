@@ -17,7 +17,7 @@ jobs:
         run: npm install
 
       - name: Create a blank AWS exports file
-        uses: "finnp/create-file-action@master"
+        uses: finnp/create-file-action@master
           env:
             FILE_NAME: "src/aws-exports.js"
             FILE_DATA: ""
