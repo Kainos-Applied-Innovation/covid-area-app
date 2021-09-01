@@ -28,6 +28,6 @@ jobs:
       - name: Run the Cypress tests
         uses: cypress-io/github-action@v2
         with:
-          build: npm run build
-          start: npm start
+          build: npx cypress run
+          start: expo start
           browser: chrome
