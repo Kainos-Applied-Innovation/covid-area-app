@@ -28,6 +28,6 @@ jobs:
       - name: Run the Cypress tests
         uses: cypress-io/github-action@v2
         with:
-          start: expo start
+          start: npm run web
           browser: chrome
           wait-on: 'http://localhost:19006'
