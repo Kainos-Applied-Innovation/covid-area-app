@@ -29,6 +29,5 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           start: expo start
-          build: npx cypress run
           browser: chrome
-          wait-on: 'http://localhost:19006/'
+          wait-on: 'http://localhost:19006'
