@@ -115,6 +115,7 @@ To enable developer mode:
 4. Navigate back to the main Settings page, you will now see "Developer Options" listed
 5. Tap on "Developer Options"
 6. Scroll down to "USB Debugging" and enable it.
+
 *Note: there may be minor variation between device manufacturers for the instructions above.*
 
 If you have not done so already, please install the Android Platform Tools so that we can access the ADB.
@@ -133,6 +134,40 @@ adb devices
 ```
 adb install /path/to/apk/file
 ```
+
+### iOS
+To run the app on your iOS device, your device must be registered with our Apple Developer account. You must do the following:
+
+**Windows 10**
+
+1. Connect your iOS device to the Windows 10 computer using a cable
+2. Move your mouse to on top of the Windows icon (bottom left)
+3. Right click on the Windows icon and select “Device Manager”
+4. Scroll down the list until you see "Universal Serial Bus devices”
+5. Expand the “Universal Serial Bus devices” option. If that option is not visible, check that the cable is connected to the iPhone & computer. If it’s still not visible, expand the “Universal Serial Bus controllers” option
+6. In one of those options, you should now see “Apple Mobile Device”
+7. Double click on “Apple Mobile Device”
+8. Select the “Details” tab at the top
+9. Change the Property drop down list to “Device Instance Path”
+10. You will now see a very long value, right click on it and select copy
+11. Send that long value to the person that manages the Apple Developer account. They will add your device UDID to the “Device” list and will then update the Provisioning Profile
+
+**MacOS**
+
+1. Connect your iOS device to the Mac using a cable
+2. Open Finder and click on your device (it will be on the left hand side, under “Locations”)
+3. Move your mouse on top of “iPhone …” eg. "iPhone 12 57GB (20 available) 85%”
+4. Click once, you will now see the Serial Number & UDID
+5. Do a Control + click and then click on “Copy UDID"
+6. Send the UDID to the person that manages the Apple Developer account. They will add your device UDID to the “Device” list and will then update the Provisioning Profile
+
+Once you've been added and a new .ipa file has been generated, you can now install the app:
+1. Download the .ipa file
+2. Connect your iOS device to the Mac using a cable
+3. Open Xcode
+4. Navigate to the top bar & click on Window > Devices and Simulators
+5. Navigate to the “Installed Apps” section and click on the + icon
+6. Select the .ipa file on your machine
 
 ## To Do
 Pending developments in a rough priority

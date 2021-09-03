@@ -17,6 +17,9 @@
       "**/*"
     ],
     "ios": {
+      "icon": "./assets/icon-square-ios.png",
+      "bundleIdentifier": "com.kainos.covidareaapp",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
