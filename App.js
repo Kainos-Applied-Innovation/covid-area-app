@@ -148,6 +148,15 @@ const App = () => {
         } else {
           console.log("Location not in Scotland, defaulting to Glasgow City")
           setCouncil('Glasgow City');
+
+          Alert.alert(
+            "Current Location",
+            "You are not currently located in Scotland, so Glasgow City will be used as the default council area.",
+            [
+              { text: "OK", onPress: () => console.log("Invalid location alert was dismissed") }
+            ],
+            { cancelable: false }
+          );
         }
       }
     } catch (err) { console.log(err); }
