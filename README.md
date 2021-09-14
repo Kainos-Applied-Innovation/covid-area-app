@@ -161,7 +161,22 @@ To run the app on your iOS device, your device must be registered with our Apple
 5. Do a Control + click and then click on “Copy UDID"
 6. Send the UDID to the person that manages the Apple Developer account. They will add your device UDID to the “Device” list and will then update the Provisioning Profile
 
-Once you've been added and a new .ipa file has been generated, you can now install the app:
+Once you've been added and a new .ipa file has been generated, you can now install the app. Follow the steps below:
+
+**Windows 10**
+
+1. Download the .ipa file
+2. Open the Microsoft Store app and download iTunes
+3. Open iTunes
+4. Connect your iOS device to the computer using a cable. Click allow on the popup on your computer and tap on "Trust" on your iOS device.
+5. Find the .ipa file on your computer, right click and copy it
+6. Open iTunes again and place your mouse over the iOS device's name (eg. "Liam's iPhone"). It will be on the left hand side of the screen.
+7. Right click and paste the .ipa file
+8. You will now see the download bar at the top of the iTunes window. If this does not happen, check that your device is connected to the computer and try pasting again. 
+9. Your app should now be installed on the device. Open your iOS device and find it on the home screen.
+
+**MacOS**
+
 1. Download the .ipa file
 2. Connect your iOS device to the Mac using a cable
 3. Open Xcode
@@ -169,12 +184,22 @@ Once you've been added and a new .ipa file has been generated, you can now insta
 5. Navigate to the “Installed Apps” section and click on the + icon
 6. Select the .ipa file on your machine
 
+## Troubleshooting
+
+***Council & Restrictions data is no longer showing in the app***
+
+It's likely that the AppSync key has expired for GraphQL.
+
+1. Open the AWS Console
+2. Navigate to AppSync
+3. Click on the API and select "Settings"
+4. Change the expiry date for the API key
+
 ## To Do
 Pending developments in a rough priority
 * Testing (Amplify)
 * Front-end and flow improvements
 * [Offline Sync](https://aws.amazon.com/blogs/mobile/aws-appsync-offline-reference-architecture/)
-* Cleaner Data Model
 * Scrapping Sync
 
 ## Built With
@@ -192,7 +217,7 @@ Current version: 0.1.0 (Active Development)
 
 ## Authors
 * **Marc Nevin** - *Initial setup*
-* **Liam McCormick** - *Jest & Cypress testing, generating APK file*
+* **Liam McCormick** - *Jest & Cypress testing, deployment*
 
 ## License
 TBA
