@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Text, View, SafeAreaView, Button, ScrollView, Alert } from 'react-native';
+import { Text, View, SafeAreaView, Button, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { API, graphqlOperation } from 'aws-amplify';
 import { getCouncil, listCouncils, getRestrictions } from './src/graphql/queries';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -58,6 +58,8 @@ const App = () => {
     open: '',
     closed: ''
   });
+  
+  const [indicator, setIndicator] = useState(true);
 
   // const [expoPushToken, setExpoPushToken] = useState('');
   // const [notification, setNotification] = useState(false);
@@ -77,15 +79,22 @@ const App = () => {
   // Get Council names from GQL
   async function fetchCouncilNames() {
     try {
+      setIndicator(true);
       const councilData = await API.graphql(graphqlOperation(listCouncils));
       const councilNames = [];
       var areas = councilData.data.listCouncils.items;
+
       for(let area in areas){
         councilNames.push({label: areas[area].id, value: areas[area].id, level: areas[area].level});
       };
+
       councilNames.sort();
       setCouncilList(councilNames);
-    } catch (err) { console.log(err) }
+      setIndicator(false);
+    } catch (err) { 
+      console.log(err) 
+      setIndicator(false);
+    }
   }
 
   // get the alert level for the selected council, using the data in councilList
@@ -111,6 +120,7 @@ const App = () => {
   // Get Restrictions for Current Level
   async function fetchRestrictions() {
     try {
+      setIndicator(true);
       const response = await API.graphql(graphqlOperation(getRestrictions, {id: alertLevel.toString()}));
       
       // TODO check parse
@@ -120,7 +130,12 @@ const App = () => {
         closed: response.data.getRestrictions.closed 
       });
 
-    } catch (err) { console.log(err) }
+      setIndicator(false);
+
+    } catch (err) { 
+      console.log(err) 
+      setIndicator(false);
+    }
   }
 
   // Check location and reverseGeoCode
@@ -181,6 +196,7 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.overallContainer}>
+
       <View style={styles.alertContainer}>
         <Text style={styles.alertTitle}>
           Alert Level
@@ -220,6 +236,13 @@ const App = () => {
         />
 
         <View style={styles.scrollContainer}>
+
+        {indicator && (
+          <View>
+            <ActivityIndicator size="large" color="#0000ff"/>
+          </View>
+        )}
+
           <Text style={styles.title}>
               Restrictions:
           </Text>
@@ -247,6 +270,7 @@ const App = () => {
           </ScrollView>
         </View>
       </View>
+
     </SafeAreaView>
   );
 }
