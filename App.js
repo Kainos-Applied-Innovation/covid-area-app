@@ -141,6 +141,7 @@ const App = () => {
   // Check location and reverseGeoCode
   async function checkLocation() {
     try {
+      setIndicator(true);
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         console.log('Permissions Denied... returning dummy location') 
@@ -174,7 +175,11 @@ const App = () => {
           );
         }
       }
-    } catch (err) { console.log(err); }
+      setIndicator(false);
+    } catch (err) { 
+      console.log(err); 
+      setIndicator(false);
+    }
   }
 
   // On page load, populate council list
