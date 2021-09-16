@@ -130,7 +130,7 @@ To install the app on your device, follow the instructions below.
 6. Right click on the .apk file and send it to your Android device using the "Send to" option. You will see the device's name in the list
 7. On your Android, open the Files app
 8. Find the Covid-Area-Alerts app and tap on it
-9. You may be asked to change your security settings so that the app can be installed from unknown sources - please allow this, you can undo this setting change when the app is installed. You can change the setting using the option shown in the pop up alert. Alternatively, you can search for "source" in Settings - find an option similar to "Install apps from external sources", select the Files app and enable the option.
+9. You may be asked to change your security settings so that the app can be installed from unknown sources - please allow this, you can undo this setting change after the app is installed. You can change the setting using the option shown in the pop up alert. Alternatively, you can search for "source" in Settings - find an option similar to "Install apps from external sources", select the Files app and enable the option.
 10. Go back to the Files app, tap on the Covid-Area-Alerts app again and tap on "Install"
 
 *Note: device manufacturers may use slighty different names for the options in the above instructions. If you cannot find an option with the name given above, do a search for it within Settings.*
