@@ -112,11 +112,30 @@ To enable developer mode:
 1. Open the Settings app
 2. Navigate to System settings > About phone
 3. Tap on "Build Number" more than 5 times. You may then need to enter your phone's password.
-4. Navigate back to the main Settings page, you will now see "Developer Options" listed
+4. Navigate back to the main Settings page, you will now see "Developer Options" listed. If it's not there, you can find it using the search bar within Settings.
 5. Tap on "Developer Options"
 6. Scroll down to "USB Debugging" and enable it.
 
 *Note: there may be minor variation between device manufacturers for the instructions above.*
+
+To install the app on your device, follow the instructions below.
+
+**Windows 10**
+
+1. Open "Settings" on your Android device
+2. Navigate to "Developer Options"
+3. Find the option that says "USB configuration" and tap on it. If it's not there, you can find it using the search bar within Settings
+4. Select "Media Transfer Protocol (MTP)"
+5. On your Windows computer, go to where you have downloaded the .apk file
+6. Right click on the .apk file and send it to your Android device using the "Send to" option. You will see the device's name in the list
+7. On your Android, open the Files app
+8. Find the Covid-Area-Alerts app and tap on it
+9. You may be asked to change your security settings so that the app can be installed from unknown sources - please allow this, you can undo this setting change when the app is installed. You can change the setting using the option shown in the pop up alert. Alternatively, you can search for "source" in Settings - find an option similar to "Install apps from external sources", select the Files app and enable the option.
+10. Go back to the Files app, tap on the Covid-Area-Alerts app again and tap on "Install"
+
+*Note: device manufacturers may use slighty different names for the options in the above instructions. If you cannot find an option with the name given above, do a search for it within Settings.*
+
+**MacOS**
 
 If you have not done so already, please install the Android Platform Tools so that we can access the ADB.
 If you have a Mac and have HomeBrew installed, you can enter the following:
@@ -124,7 +143,6 @@ If you have a Mac and have HomeBrew installed, you can enter the following:
 brew install android-platform-tools
 ```
 
-To install the app on your device:
 1. Connect your device to your computer using a USB cable
 2. Use the command below to check that your device is connected:
 ```
